@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olaoluwa Oregunwa David</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one narrow column, audit work first, workpaper-style rows with a left label rail. */
+:root{
+  --bg:#F3F6F7; --surface:#FFFFFF; --ink:#14232B; --muted:#4F626B; --line:#D3DCE0;
+  --accent:#0B6E78; --accent-soft:#E0F0F2;
+  --crit:#B3261E; --high:#C2570F; --med:#9C7A00; --low:#2B7A4B;
+  --code-bg:#EAF0F2;
+  --f-head:"Space Grotesk",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E181D; --surface:#15242B; --ink:#E5EDF0; --muted:#9BAEB7; --line:#2A3C45;
+    --accent:#52C3CE; --accent-soft:#12343A;
+    --crit:#F27A72; --high:#F2985C; --med:#DDB84C; --low:#62C48C;
+    --code-bg:#0B1418; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E181D; --surface:#15242B; --ink:#E5EDF0; --muted:#9BAEB7; --line:#2A3C45;
+  --accent:#52C3CE; --accent-soft:#12343A;
+  --crit:#F27A72; --high:#F2985C; --med:#DDB84C; --low:#62C48C;
+  --code-bg:#0B1418; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--f-head);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,3.1rem);letter-spacing:-0.02em;font-weight:700}
+h2{font-size:1.65rem;letter-spacing:-0.01em;font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:.82rem}
+
+/* top bar */
+.bar{display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
+.bar .who{font-family:var(--f-head);font-weight:600}
+.bar nav{display:flex;gap:18px;flex-wrap:wrap;font-size:.92rem}
+.bar nav a{color:var(--muted);text-decoration:none}
+.bar nav a:hover{color:var(--accent)}
+
+/* hero */
+.hero{padding:56px 0 40px;display:grid;gap:20px}
+.role{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.hero p.lead{font-size:1.15rem;max-width:62ch;color:var(--ink)}
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 28px;margin-top:8px;padding-top:20px;border-top:1px solid var(--line)}
+.contact dt{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.contact dd{margin:2px 0 0;word-break:break-word}
+
+/* sections */
+section{padding:48px 0 8px;scroll-margin-top:12px}
+.sec-head{display:grid;gap:8px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.sec-head p{color:var(--muted);max-width:68ch}
+
+/* workpaper rows */
+.wp{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 28px;padding:28px 0;border-bottom:1px solid var(--line)}
+.wp:last-child{border-bottom:0}
+.rail{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;padding:3px 8px;border:1px solid var(--line);border-radius:3px;color:var(--muted);background:var(--surface);white-space:nowrap}
+.tag.solo{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.body{display:grid;gap:14px;min-width:0}
+.body p{max-width:68ch}
+.body ul{margin:0;padding-left:1.1rem;display:grid;gap:6px;max-width:68ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fact{background:var(--surface);border:1px solid var(--line);padding:10px 12px;border-radius:4px}
+.fact b{display:block;font-family:var(--f-head);font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.fact span{font-size:.82rem;color:var(--muted)}
+
+/* risk bars */
+.bars{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);padding:14px;border-radius:4px}
+.bars .row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:center;font-size:.85rem}
+.stack{display:flex;height:30px;border-radius:3px;overflow:hidden}
+.stack i{display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--f-mono);font-size:.75rem;font-weight:600;color:#fff;min-width:0}
+.c{background:var(--crit)} .h{background:var(--high)} .m{background:var(--med)} .l{background:var(--low)}
+:root[data-theme="dark"] .stack i{color:#0B1418}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stack i{color:#0B1418}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:2px;vertical-align:-1px}
+.legend .lc::before{background:var(--crit)} .legend .lh::before{background:var(--high)} .legend .lm::before{background:var(--med)} .legend .ll::before{background:var(--low)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+
+/* odoo cards */
+.mod{display:grid;gap:14px;padding:28px 0;border-bottom:1px solid var(--line)}
+.mod:last-of-type{border-bottom:0}
+.mod header{display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;justify-content:space-between}
+.mod .id{font-family:var(--f-mono);font-size:.8rem;color:var(--accent)}
+.mod p{max-width:68ch}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+figcaption{font-size:.8rem;color:var(--muted)}
+pre{margin:0;background:var(--code-bg);border:1px solid var(--line);border-radius:4px;padding:14px;overflow-x:auto;font-family:var(--f-mono);font-size:.8rem;line-height:1.55}
+.note{font-size:.9rem;color:var(--muted);max-width:68ch;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface)}
+
+/* apps + data cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+
+@media (max-width:680px){
+  .wp{grid-template-columns:minmax(0,1fr)}
+  .rail{flex-direction:row;flex-wrap:wrap}
+  .bars .row{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+<div class="wrap">
+  <div class="bar">
+    <span class="who">Olaoluwa Oregunwa David</span>
+    <nav aria-label="Sections">
+      <a href="#audit">IT audit</a>
+      <a href="#odoo">Odoo modules</a>
+      <a href="#python">Python and data</a>
+      <a href="#apps">Web apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <span class="role">IT audit / technology risk / cyber GRC / Odoo ERP</span>
+    <h1>Olaoluwa Oregunwa David</h1>
+    <p class="lead">I test IT controls, build risk registers and write audit workpapers. Before that I spent several years building and supporting Odoo ERP for businesses in Nigeria. This page shows both, with the audit work first.</p>
+    <dl class="contact" id="contact">
+      <div><dt>GitHub</dt><dd><a href="https://github.com/Ollie345">github.com/Ollie345</a></dd></div>
+      <div><dt>LinkedIn</dt><dd><a href="https://linkedin.com/in/ooregunwa">linkedin.com/in/ooregunwa</a></dd></div>
+      <div><dt>Email</dt><dd>davidoregunwa@gmail.com</dd></div>
+      <div><dt>Phone</dt><dd>(+44) 7440 057731</dd></div>
+    </dl>
+  </header>
+
+  <!-- ===================== IT AUDIT ===================== -->
+  <section id="audit">
+    <div class="sec-head">
+      <h2>IT audit and controls testing</h2>
+      <p>Case studies built around fictional companies, so every name, person and figure in them is made up. Items marked Group 3 were produced with a team. Items marked Individual are my own.</p>
+    </div>
+
+    <article class="wp">
+      <div class="rail"><span class="tag solo">Individual</span><span class="tag">Risk register</span></div>
+      <div class="body">
+        <h3>Risk register for an e-commerce business</h3>
+        <p>Ten risks across the customer database, email, payment gateway, backups, laptops and cloud storage. Each risk has an asset, a vulnerability, a threat actor, an owner and the confidentiality, integrity or availability it affects. Likelihood and impact are scored 1 to 5, rated against a RAG matrix, then re-scored after the control is applied. Treatment is chosen as mitigate or transfer, with a plain-language action list for each.</p>
+        <div class="bars" role="img" aria-label="Inherent risk: 3 critical, 2 high, 4 medium, 1 low. Residual risk: 3 medium, 7 low.">
+          <div class="row"><span>Before controls</span><div class="stack"><i class="c" style="flex:3">3</i><i class="h" style="flex:2">2</i><i class="m" style="flex:4">4</i><i class="l" style="flex:1">1</i></div></div>
+          <div class="row"><span>After controls</span><div class="stack"><i class="m" style="flex:3">3</i><i class="l" style="flex:7">7</i></div></div>
+          <div class="legend"><span class="lc">Critical</span><span class="lh">High</span><span class="lm">Medium</span><span class="ll">Low</span></div>
+        </div>
+        <p>The three critical risks were SQL injection against the customer database, a breach at the payment processor and failure of the backup environment. After controls they all land at medium. The two vendor risks are transferred through contract terms: yearly proof of PCI-DSS validation, a right-to-audit clause, breach notification deadlines and tested restores.</p>
+        <p><a href="downloads/Risk-Register.xlsx">Download the workbook (xlsx)</a></p>
+      </div>
+    </article>
+
+    <article class="wp">
+      <div class="rail"><span class="tag">Group 3</span><span class="tag">RACM</span></div>
+      <div class="body">
+        <h3>Risk and control matrix for Active Directory</h3>
+        <p>Eight controls for the Active Directory of a 100-person online retailer, mapped to three IT general control domains: manage access, manage change and manage operations. Each control has an owner, a frequency, a type and a nature (automated, manual or IT-dependent manual), and the risk it answers.</p>
+        <div class="tw"><table>
+          <thead><tr><th>ID</th><th>Control</th><th>Domain</th><th>Runs</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">CTRMA21.1</td><td>New user access provisioning</td><td>Manage access</td><td>Each request</td></tr>
+            <tr><td class="mono">CTRMA21.2</td><td>Termination access deprovisioning</td><td>Manage access</td><td>Each leaver, monthly reconciliation</td></tr>
+            <tr><td class="mono">CTRMA21.3</td><td>Quarterly user access review</td><td>Manage access</td><td>Quarterly</td></tr>
+            <tr><td class="mono">CTRMC22.1</td><td>Change authorisation and approval</td><td>Manage change</td><td>Each change</td></tr>
+            <tr><td class="mono">CTRMC22.2</td><td>Automated deployment and rollback</td><td>Manage change</td><td>Each deployment</td></tr>
+            <tr><td class="mono">CTRMC22.3</td><td>Change communication and training plan</td><td>Manage change</td><td>Each change</td></tr>
+            <tr><td class="mono">CTRMO23.1</td><td>Backup and recovery management</td><td>Manage operations</td><td>Daily</td></tr>
+            <tr><td class="mono">CTRMO23.2</td><td>System monitoring and alerting</td><td>Manage operations</td><td>Continuous</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </article>
+
+    <article class="wp">
+      <div class="rail"><span class="tag">Group 3</span><span class="tag">Control testing</span></div>
+      <div class="body">
+        <h3>Testing plan for new user access provisioning</h3>
+        <p>A test plan for one control, new user access to Active Directory, written from the IT auditor's side. The plan covers the audit objective, the test of design and the test of operating effectiveness.</p>
+        <ul>
+          <li>Inquiry with the control owner, inspection of the access policy and of sampled tickets, and re-performance of the approval.</li>
+          <li>The population is a full extract taken straight from the ticketing system, not a list the control owner has filtered.</li>
+          <li>Pass condition: every sampled request has a correct line manager request, an approval before provisioning, and permissions that match what was approved.</li>
+          <li>Failure condition: access granted with no request, approval from the wrong role, or permissions wider than approved. The recommendation is a second review step for high-privilege access and a look-back over access granted during the period.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="wp">
+      <div class="rail"><span class="tag solo">Individual</span><span class="tag">Workpaper</span></div>
+      <div class="body">
+        <h3>Entity level controls workpaper</h3>
+        <p>A workpaper for a mid-sized company, testing two entity level controls: IT risk assessment, and monitoring of IT controls through internal audit. For each control it sets out the risk statement, the procedure, the approach and the expected evidence, then records findings, evidence and a conclusion with a rationale. Separate sheets hold the test of design and the test of operating effectiveness.</p>
+        <ul>
+          <li>The risk assessment standard sets a minimum of two assessments a year, and the test checks that reports reached the risk committee.</li>
+          <li>For internal audit, the procedure checks the charter covers IT, the annual plan includes IT reviews, and one completed report shows exceptions raised and sent to stakeholders.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="wp">
+      <div class="rail"><span class="tag solo">Individual</span><span class="tag">Workpaper</span></div>
+      <div class="body">
+        <h3>Understanding of the IT environment</h3>
+        <p>The first workpaper of an IT audit: how IT is organised and run. It covers IT people and organisation, IT strategy, the IT steering committee, policies and procedures benchmarked against COBIT 5, key business applications and connectivity.</p>
+        <div class="facts">
+          <div class="fact"><b>7 of 15</b><span>staff sit in IT, checked against a staffing ratio benchmark</span></div>
+          <div class="fact"><b>Inadequate</b><span>IT strategy: aligned to the business, but no evidence of approval</span></div>
+          <div class="fact"><b>Inadequate</b><span>Steering committee: charter names nine members, no meeting minutes provided</span></div>
+        </div>
+        <p>Where evidence was missing, the conclusion says so and records what was requested, rather than assuming the control worked.</p>
+      </div>
+    </article>
+
+    <article class="wp">
+      <div class="rail"><span class="tag">Group 3</span><span class="tag">Presentation</span></div>
+      <div class="body">
+        <h3>IT control environment, 19-slide deck</h3>
+        <p>A presentation on what an IT control environment is and how to assess one: four assessment pillars, a five-step approach (scope and framework, ITGC evaluation, design and operating tests, vulnerability and risk analysis, reporting with a roadmap), six common deficiency types found in control testing, and a summary of the eight-control RACM above.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== ODOO ===================== -->
+  <section id="odoo">
+    <div class="sec-head">
+      <h2>Odoo ERP modules</h2>
+      <p>Custom modules I wrote or extended for Odoo 18 while working on ERP projects. The code belongs to the clients, so it is not published here. The screenshots come from my own local Odoo 18 install running these modules on demo data.</p>
+    </div>
+
+    <article class="mod">
+      <header><h3>Telesales and routes</h3><span class="id">crm_telesales_custom</span></header>
+      <p>Adds routes to CRM for a field sales operation. Outlets are grouped into routes and zones, each route has a call schedule by day of the week with assigned agents, and every lead keeps its call history. Telesales agents see the outlets assigned to them. The lead form shows the route, the call count and the schedule.</p>
+      <div class="shots">
+        <figure><img src="assets/odoo/telesales-routes.jpg" alt="List of sales routes with zones" loading="lazy"><figcaption>Routes and zones</figcaption></figure>
+        <figure><img src="assets/odoo/telesales-route-schedules.jpg" alt="Call schedule tab of a route showing Monday and Thursday" loading="lazy"><figcaption>Call schedule by weekday</figcaption></figure>
+        <figure><img src="assets/odoo/telesales-route-outlets.jpg" alt="Outlets assigned to a route" loading="lazy"><figcaption>Outlets on a route</figcaption></figure>
+        <figure><img src="assets/odoo/crm-lead-telesales.jpg" alt="CRM opportunity with route, call and schedule counts" loading="lazy"><figcaption>Lead with route and call counts</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="mod">
+      <header><h3>Sales types and approval</h3><span class="id">ol_sales_custom</span></header>
+      <p>Extends Sales with local and export order types and an extra Review state. A local order goes from quotation to review, then a general manager approves or rejects it before it can move on. Export orders follow their own steps, built in the companion module <span class="mono">export_nxp</span> (export proceeds documents, allocations and shipment details).</p>
+      <div class="shots">
+        <figure><img src="assets/odoo/sales-approval-review.jpg" alt="Sales order in Review state with Approve and Reject buttons" loading="lazy"><figcaption>Order in Review, waiting on the general manager</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="mod">
+      <header><h3>Vendor cash plans</h3><span class="id">cash_plan</span></header>
+      <p>Splits one vendor bill into several scheduled payments. The plan holds the full amount and the bill reference. Each payment line is checked so the lines never add up to more than the bill.</p>
+      <div class="shots">
+        <figure><img src="assets/odoo/cash-plan-list.jpg" alt="List of cash plans" loading="lazy"><figcaption>Plans list</figcaption></figure>
+        <figure><img src="assets/odoo/cash-plan-form.jpg" alt="Cash plan form with vendor and bill reference" loading="lazy"><figcaption>One plan against one bill</figcaption></figure>
+        <figure><img src="assets/odoo/cash-plan-lines.jpg" alt="Payment lines of a cash plan" loading="lazy"><figcaption>Payment lines</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="mod">
+      <header><h3>Loan restructuring</h3><span class="id">account_loan_restructure</span></header>
+      <p>Adds restructure, pay-off and write-off requests to Odoo's loan app. A treasurer prepares the request, with a new amortisation schedule when the loan is restructured or a settlement account when it is paid off or written off. A CFO then approves or rejects it. Approval runs the accounting, and the chatter keeps the trail.</p>
+      <div class="shots">
+        <figure><img src="assets/odoo/loan-restructure-approval.jpg" alt="Restructure request waiting for CFO approval with new amortization schedule" loading="lazy"><figcaption>Request pending CFO approval, new schedule below</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="mod">
+      <header><h3>Manufacturing order approval</h3><span class="id">ol_mrp_custom</span></header>
+      <p>Adds Review, Approved and Rejected states to manufacturing orders. An order is sent for review, a manager approves or rejects it with a reason, and only approved orders can be confirmed.</p>
+      <div class="shots">
+        <figure><img src="assets/odoo/mrp-approval.jpg" alt="Manufacturing order in Review with Approve and Reject buttons" loading="lazy"><figcaption>Manufacturing order in Review</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="mod">
+      <header><h3>REST API for CRM</h3><span class="id">custom_api</span></header>
+      <p>A JSON API for leads, opportunities, quotes and activities, so other systems can create and read CRM records. Requests carry a bearer token that is checked against Odoo API keys, and each call runs as the user who owns the key. The call below ran against my local install with a short-lived key.</p>
+<pre>POST /custom/api/v1/leads
+Authorization: Bearer &lt;api key&gt;
+
+{"name": "Demo API lead", "email": "demo@example.com", "phone": "+000000000"}
+
+200 OK
+{"id": 46, "name": "Demo API lead", "email": "demo@example.com",
+ "phone": "+000000000", "user_id": null,
+ "create_date": "2026-11-17T03:59:42", "active": true}</pre>
+    </article>
+
+    <article class="mod">
+      <header><h3>Health check endpoint</h3><span class="id">server_health_check</span></header>
+      <p>A small public endpoint that answers whether the server can reach its database, returning a success flag and a message. It is meant for uptime monitors.</p>
+    </article>
+  </section>
+
+  <!-- ===================== PYTHON ===================== -->
+  <section id="python">
+    <div class="sec-head">
+      <h2>Python and data analysis</h2>
+      <p>Analysis scripts in pandas and matplotlib. The scripts are in the repo. The datasets are public ones and are not copied in, so each script names the file it expects.</p>
+    </div>
+
+    <article class="mod">
+      <header><h3>Amazon product reviews</h3><span class="id">python/amazon-reviews-eda</span></header>
+      <p>Exploratory analysis of Amazon reviews from the Industrial and Scientific category. The script loads the review file, cleans missing and invalid rows, and picks three products with enough reviews. It then cleans the review text (stop words removed, words reduced to their roots) and reports the most common words, summary statistics, the rating distribution, reviews over time, a word cloud and a bubble chart for each product.</p>
+      <p>A second version does the same job as a set of small reusable functions with pandas doing the loading. It adds data quality checks, compares the words used in low and high ratings, and looks at which reviews get helpful votes.</p>
+      <p><a href="python/amazon-reviews-eda/amazon_reviews_eda.py">amazon_reviews_eda.py</a> and <a href="python/amazon-reviews-eda/amazon_reviews_eda_functions.py">amazon_reviews_eda_functions.py</a></p>
+    </article>
+
+    <article class="mod">
+      <header><h3>Shopping trends</h3><span class="id">python/shopping-trends</span></header>
+      <p>Two short scripts on a retail customer dataset of about 3,900 customers. One groups customers by number of previous purchases to show how many are repeat buyers. The other adds up purchase amounts by age band and labels each bar with the total. In that data the 46 to 55 band brings in the most revenue and the over 65 band the least.</p>
+      <div class="shots">
+        <figure><img src="assets/python/customer_previous_purchases_histogram.png" alt="Histogram of customers by number of previous purchases" loading="lazy"><figcaption>Customers by previous purchases. The bins are uneven, so read the bars as counts per band.</figcaption></figure>
+        <figure><img src="assets/python/revenue_by_age_histogram.png" alt="Bar chart of total revenue by age group" loading="lazy"><figcaption>Total revenue by age band, in US dollars</figcaption></figure>
+      </div>
+      <p><a href="python/shopping-trends/purchase_frequency_histogram.py">purchase_frequency_histogram.py</a> and <a href="python/shopping-trends/revenue_by_age_histogram.py">revenue_by_age_histogram.py</a></p>
+    </article>
+  </section>
+
+  <!-- ===================== WEB APPS ===================== -->
+  <section id="apps">
+    <div class="sec-head">
+      <h2>Web apps</h2>
+      <p>Assessment apps built for other people. The code and live links are private, so these are described only.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Symptom assessment</h3>
+        <p>A mobile-friendly questionnaire with a four-step progress bar, scoring and a results page. When someone finishes, the app finds or creates the contact in Odoo CRM, adds tags, and creates a lead with a bulleted summary and an internal note. A failed CRM call is logged and does not stop the user.</p>
+        <div class="chips"><span class="tag">Next.js 15</span><span class="tag">React 19</span><span class="tag">Prisma</span><span class="tag">PostgreSQL</span><span class="tag">Odoo JSON-RPC</span></div>
+      </div>
+      <div class="card">
+        <h3>Developmental screening</h3>
+        <p>A guided screening flow with progress by domain, a Low, Moderate or High risk summary, and results sent by email from an HTML template. Leads can optionally sync to Odoo CRM with a formatted note.</p>
+        <div class="chips"><span class="tag">Next.js 15</span><span class="tag">TypeScript</span><span class="tag">Prisma</span><span class="tag">Nodemailer</span><span class="tag">Odoo JSON-RPC</span></div>
+      </div>
+      <div class="card">
+        <h3>Health assessment form</h3>
+        <p>A multi-page form that collects demographics, symptoms and medical history, shows a results page, and posts each submission to Odoo through an API route.</p>
+        <div class="chips"><span class="tag">Next.js</span><span class="tag">React</span><span class="tag">Odoo</span></div>
+      </div>
+      <div class="card">
+        <h3>Technology adoption assessment</h3>
+        <p>A tiered survey of about sixty questions, driven by a catalogue file, with a multi-tier progress indicator, short engagement breaks between sections and a report dashboard at the end.</p>
+        <div class="chips"><span class="tag">Next.js</span><span class="tag">React</span><span class="tag">CSV-driven survey</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Olaoluwa Oregunwa David, Liverpool, United Kingdom. Source for this page: github.com/Ollie345/olaoluwa-portfolio</p>
+  </footer>
+</div>
+
