@@ -397,7 +397,7 @@ Authorization: Bearer &lt;api key&gt;
     <form class="req" id="req-form" novalidate>
       <input type="hidden" name="access_key" value="1ec3a66c-2467-4a0a-a75d-d5b4194610ba">
       <input type="hidden" name="subject" value="Walkthrough request from the portfolio site">
-      <input type="hidden" name="from_name" value="Portfolio site">
+      <input type="hidden" name="from_name" value="Olaoluwa portfolio">
       <div class="hp" aria-hidden="true"><label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
       <div class="two">
         <label for="req-name">Your name<input id="req-name" name="name" type="text" required autocomplete="name"></label>
@@ -463,6 +463,8 @@ Authorization: Bearer &lt;api key&gt;
     }
     delete data.preferred_date; delete data.preferred_clock;
     if(when) data.preferred_time=when;
+    var nm=(data.name||'').trim().replace(/\s+/g,' ').slice(0,60);
+    data.subject='Walkthrough request: '+nm+(data.topic?' ('+data.topic+')':'');
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json();})
       .then(function(j){
