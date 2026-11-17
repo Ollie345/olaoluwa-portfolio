@@ -52,7 +52,9 @@ p{margin:0}
 .bar nav a:hover{color:var(--accent)}
 
 /* hero */
-.hero{padding:56px 0 40px;display:grid;gap:20px}
+.hero{padding:56px 0 40px;display:grid;gap:20px;position:relative}
+.team{font-size:.88rem;color:var(--muted)}
+.portrait{position:absolute;top:56px;right:0;width:132px;height:132px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);background:var(--soft,#E0F0F2)}
 .role{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .hero p.lead{font-size:1.15rem;max-width:62ch;color:var(--ink)}
 .contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 28px;margin-top:8px;padding-top:20px;border-top:1px solid var(--line)}
@@ -135,6 +137,7 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
 .cta:hover{filter:brightness(1.08)}
 
 @media (max-width:680px){
+  .portrait{position:static;order:-1;width:96px;height:96px}
   .wp{grid-template-columns:minmax(0,1fr)}
   .rail{flex-direction:row;flex-wrap:wrap}
   .bars .row{grid-template-columns:minmax(0,1fr)}
@@ -157,6 +160,7 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
   </div>
 
   <header class="hero">
+    <img class="portrait" src="assets/ola.jpg" width="132" height="132" alt="Olaoluwa Oregunwa David" onerror="this.hidden=true">
     <span class="role">IT audit / technology risk / cyber GRC / Odoo ERP</span>
     <h1>Olaoluwa Oregunwa David</h1>
     <p class="lead">I test IT controls, build risk registers and write audit workpapers. Before that I spent several years building and supporting Odoo ERP for businesses in Nigeria. This page shows both, with the audit work first.</p>
@@ -173,7 +177,7 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
   <section id="audit">
     <div class="sec-head">
       <h2>IT audit and controls testing</h2>
-      <p>Case studies built around fictional companies, so every name, person and figure in them is made up. Items marked Group 3 were produced with a team. Items marked Individual are my own.</p>
+      <p>Case studies built around fictional companies, so every name, person and figure in them is made up. Items marked Individual are entirely my own. The others were done with a team, and each one says what I did.</p>
     </div>
 
     <article class="wp">
@@ -192,10 +196,10 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
     </article>
 
     <article class="wp">
-      <div class="rail"><span class="tag">Group 3</span><span class="tag">RACM</span></div>
+      <div class="rail"><span class="tag">RACM</span></div>
       <div class="body">
         <h3>Risk and control matrix for Active Directory</h3>
-        <p>Eight controls for the Active Directory of a 100-person online retailer, mapped to three IT general control domains: manage access, manage change and manage operations. Each control has an owner, a frequency, a type and a nature (automated, manual or IT-dependent manual), and the risk it answers.</p>
+        <p>I built a risk and control matrix for the Active Directory of a 100-person online retailer. It has eight controls across three IT general control domains: manage access, manage change and manage operations. For each control I set the owner, how often it runs, its type and nature (automated, manual or IT-dependent manual), and the risk it answers.</p>
         <div class="tw"><table>
           <thead><tr><th>ID</th><th>Control</th><th>Domain</th><th>Runs</th></tr></thead>
           <tbody>
@@ -209,20 +213,22 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
             <tr><td class="mono">CTRMO23.2</td><td>System monitoring and alerting</td><td>Manage operations</td><td>Continuous</td></tr>
           </tbody>
         </table></div>
+        <p class="team">Done with my team.</p>
       </div>
     </article>
 
     <article class="wp">
-      <div class="rail"><span class="tag">Group 3</span><span class="tag">Control testing</span></div>
+      <div class="rail"><span class="tag">Control testing</span></div>
       <div class="body">
         <h3>Testing plan for new user access provisioning</h3>
-        <p>A test plan for one control, new user access to Active Directory, written from the IT auditor's side. The plan covers the audit objective, the test of design and the test of operating effectiveness.</p>
+        <p>I wrote a test plan for one control, new user access to Active Directory, from the IT auditor's side. It covers the audit objective, the test of design and the test of operating effectiveness.</p>
         <ul>
-          <li>Inquiry with the control owner, inspection of the access policy and of sampled tickets, and re-performance of the approval.</li>
-          <li>The population is a full extract taken straight from the ticketing system, not a list the control owner has filtered.</li>
-          <li>Pass condition: every sampled request has a correct line manager request, an approval before provisioning, and permissions that match what was approved.</li>
-          <li>Failure condition: access granted with no request, approval from the wrong role, or permissions wider than approved. The recommendation is a second review step for high-privilege access and a look-back over access granted during the period.</li>
+          <li>I test it through inquiry with the control owner, inspection of the access policy and of sampled tickets, and re-performance of the approval.</li>
+          <li>I take the population as a full extract straight from the ticketing system, not a list the control owner has filtered.</li>
+          <li>My pass condition: every sampled request has a correct line manager request, an approval before provisioning, and permissions that match what was approved.</li>
+          <li>My failure condition: access granted with no request, approval from the wrong role, or permissions wider than approved. I recommend a second review step for high-privilege access and a look-back over access granted during the period.</li>
         </ul>
+        <p class="team">Done with my team.</p>
       </div>
     </article>
 
@@ -253,10 +259,11 @@ form.req input:focus-visible,form.req select:focus-visible,form.req textarea:foc
     </article>
 
     <article class="wp">
-      <div class="rail"><span class="tag">Group 3</span><span class="tag">Presentation</span></div>
+      <div class="rail"><span class="tag">Presentation</span></div>
       <div class="body">
         <h3>IT control environment, 19-slide deck</h3>
-        <p>A presentation on what an IT control environment is and how to assess one: four assessment pillars, a five-step approach (scope and framework, ITGC evaluation, design and operating tests, vulnerability and risk analysis, reporting with a roadmap), six common deficiency types found in control testing, and a summary of the eight-control RACM above.</p>
+        <p>I worked on a presentation about what an IT control environment is and how to assess one. My sections cover the four assessment pillars, the five-step approach (scope and framework, ITGC evaluation, design and operating tests, vulnerability and risk analysis, reporting with a plan of action), six common deficiency types found in control testing, and a summary of the eight-control RACM above.</p>
+        <p class="team">Done with my team.</p>
       </div>
     </article>
   </section>
