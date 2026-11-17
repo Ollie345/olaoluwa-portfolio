@@ -420,7 +420,7 @@ Authorization: Bearer &lt;api key&gt;
       <label for="req-msg">Anything I should know before the call<textarea id="req-msg" name="message" required></textarea></label>
       <button class="btn" type="submit" id="req-btn">Send request</button>
       <p id="req-status" role="status" aria-live="polite"></p>
-      <p class="note">Your name, email and message are sent to my inbox through the Web3Forms service. I only use them to reply to you.</p>
+      <p class="note">Your name, email and message are emailed to me through Google, with Web3Forms as a backup. I only use them to reply to you, and you get a confirmation email.</p>
     </form>
   </section>
 
@@ -431,6 +431,7 @@ Authorization: Bearer &lt;api key&gt;
 
 <script>
 (function(){
+  var MAILER='https://script.google.com/macros/s/AKfycbyOS8J0QdPmZnOCliuahDMc3ftq_PJzJAmjRKB-CRRUpG7bHBdihgRDPPk7U4zl-G3u/exec';
   var form=document.getElementById('req-form'); if(!form) return;
   var btn=document.getElementById('req-btn'), st=document.getElementById('req-status');
   var tz='UTC'; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'; }catch(e){}
@@ -461,18 +462,39 @@ Authorization: Bearer &lt;api key&gt;
       var d=new Date(data.preferred_date+'T'+(data.preferred_clock||'12:00'));
       if(!isNaN(d)) when=d.toLocaleString('en-GB',fmt)+' ('+tz+')';
     }
+    var start='';
+    if(data.preferred_date && data.preferred_clock){
+      var sd=new Date(data.preferred_date+'T'+data.preferred_clock);
+      if(!isNaN(sd)) start=sd.toISOString();
+    }
     delete data.preferred_date; delete data.preferred_clock;
     if(when) data.preferred_time=when;
     var nm=(data.name||'').trim().replace(/\s+/g,' ').slice(0,60);
     data.subject='Walkthrough request: '+nm+(data.topic?' ('+data.topic+')':'');
-    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
+
+    function done(ok,msg){
+      st.className=ok?'ok':'err'; st.textContent=msg;
+      if(ok){ form.reset(); syncTime(); }
+      btn.disabled=false; btn.textContent='Send request';
+    }
+    function backup(){
+      return fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
+        .then(function(r){return r.json();})
+        .then(function(j){ if(j && j.success){ done(true,'Thanks, your request is in. I will reply by email.'); } else { throw new Error('backup failed'); } });
+    }
+    var payload={name:data.name,email:data.email,topic:data.topic,message:data.message,preferred:when,start:start,tz:tz,botcheck:data.botcheck?'1':''};
+    // Plain text body keeps this a simple request that needs no preflight.
+    fetch(MAILER,{method:'POST',body:JSON.stringify(payload)})
       .then(function(r){return r.json();})
       .then(function(j){
-        if(j && j.success){ st.className='ok'; st.textContent='Thanks, your request is in. I will reply by email.'; form.reset(); }
-        else { throw new Error((j&&j.message)||'failed'); }
+        if(j && j.ok){ done(true,'Thanks, your request is in. Check your inbox for a confirmation. I will reply by email.'); }
+        else if(j && j.error==='repeat'){ done(false,'You sent a request a moment ago. Please wait a few minutes before sending another.'); }
+        else if(j && j.error==='invalid'){ done(false,'Please check your name, email address and message, then try again.'); }
+        else { throw new Error((j&&j.error)||'failed'); }
       })
-      .catch(function(){ st.className='err'; st.textContent='That did not send. Please try again, or email davidoregunwa@gmail.com directly.'; })
-      .then(function(){ btn.disabled=false; btn.textContent='Send request'; });
+      .catch(function(){
+        return backup().catch(function(){ done(false,'That did not send. Please try again, or email davidoregunwa@gmail.com directly.'); });
+      });
   });
 })();
 </script>
