@@ -116,6 +116,24 @@ pre{margin:0;background:var(--code-bg);border:1px solid var(--line);border-radiu
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
 
+
+/* walkthrough form */
+form.req{display:grid;gap:14px;max-width:640px}
+form.req .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+form.req label{display:grid;gap:6px;font-size:.88rem;font-weight:500}
+form.req input,form.req select,form.req textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:10px 12px;width:100%;min-width:0}
+form.req textarea{min-height:120px;resize:vertical}
+form.req input:focus-visible,form.req select:focus-visible,form.req textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.btn{font:inherit;font-weight:600;color:var(--surface);background:var(--accent);border:0;border-radius:4px;padding:11px 20px;cursor:pointer;justify-self:start}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.btn[disabled]{opacity:.6;cursor:progress}
+#req-status{min-height:1.4em;font-size:.92rem}
+#req-status.ok{color:var(--low)} #req-status.err{color:var(--crit)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cta{display:inline-block;justify-self:start;font-weight:600;color:var(--surface);background:var(--accent);padding:10px 18px;border-radius:4px;text-decoration:none}
+.cta:hover{filter:brightness(1.08)}
+
 @media (max-width:680px){
   .wp{grid-template-columns:minmax(0,1fr)}
   .rail{flex-direction:row;flex-wrap:wrap}
@@ -133,6 +151,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-si
       <a href="#odoo">Odoo modules</a>
       <a href="#python">Python and data</a>
       <a href="#apps">Web apps</a>
+      <a href="#walkthrough">Walkthrough</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -141,6 +160,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-si
     <span class="role">IT audit / technology risk / cyber GRC / Odoo ERP</span>
     <h1>Olaoluwa Oregunwa David</h1>
     <p class="lead">I test IT controls, build risk registers and write audit workpapers. Before that I spent several years building and supporting Odoo ERP for businesses in Nigeria. This page shows both, with the audit work first.</p>
+    <a class="cta" href="#walkthrough">Request a walkthrough</a>
     <dl class="contact" id="contact">
       <div><dt>GitHub</dt><dd><a href="https://github.com/Ollie345">github.com/Ollie345</a></dd></div>
       <div><dt>LinkedIn</dt><dd><a href="https://linkedin.com/in/ooregunwa">linkedin.com/in/ooregunwa</a></dd></div>
@@ -368,8 +388,61 @@ Authorization: Bearer &lt;api key&gt;
     </div>
   </section>
 
+  <!-- ===================== WALKTHROUGH ===================== -->
+  <section id="walkthrough">
+    <div class="sec-head">
+      <h2>Request a walkthrough</h2>
+      <p>Want to see the audit workpapers or the Odoo modules running? Tell me what you would like to see and when suits you. I will reply by email to set up a call.</p>
+    </div>
+    <form class="req" id="req-form" novalidate>
+      <input type="hidden" name="access_key" value="1ec3a66c-2467-4a0a-a75d-d5b4194610ba">
+      <input type="hidden" name="subject" value="Walkthrough request from the portfolio site">
+      <input type="hidden" name="from_name" value="Portfolio site">
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
+      <div class="two">
+        <label for="req-name">Your name<input id="req-name" name="name" type="text" required autocomplete="name"></label>
+        <label for="req-email">Your email<input id="req-email" name="email" type="email" required autocomplete="email"></label>
+      </div>
+      <label for="req-topic">What would you like to see
+        <select id="req-topic" name="topic">
+          <option>IT audit and controls testing</option>
+          <option>Odoo ERP modules</option>
+          <option>Python and data analysis</option>
+          <option>Web apps</option>
+          <option>A mix, or something else</option>
+        </select>
+      </label>
+      <label for="req-when">Preferred day and time, with your time zone<input id="req-when" name="preferred_time" type="text" placeholder="For example Thursday afternoon, UK time"></label>
+      <label for="req-msg">Anything I should know before the call<textarea id="req-msg" name="message" required></textarea></label>
+      <button class="btn" type="submit" id="req-btn">Send request</button>
+      <p id="req-status" role="status" aria-live="polite"></p>
+      <p class="note">Your name, email and message are sent to my inbox through the Web3Forms service. I only use them to reply to you.</p>
+    </form>
+  </section>
+
   <footer>
     <p>Olaoluwa Oregunwa David, Liverpool, United Kingdom. Source for this page: github.com/Ollie345/olaoluwa-portfolio</p>
   </footer>
 </div>
 
+<script>
+(function(){
+  var form=document.getElementById('req-form'); if(!form) return;
+  var btn=document.getElementById('req-btn'), st=document.getElementById('req-status');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    st.className=''; st.textContent='';
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    btn.disabled=true; btn.textContent='Sending...';
+    var data=Object.fromEntries(new FormData(form).entries());
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        if(j && j.success){ st.className='ok'; st.textContent='Thanks, your request is in. I will reply by email.'; form.reset(); }
+        else { throw new Error((j&&j.message)||'failed'); }
+      })
+      .catch(function(){ st.className='err'; st.textContent='That did not send. Please try again, or email davidoregunwa@gmail.com directly.'; })
+      .then(function(){ btn.disabled=false; btn.textContent='Send request'; });
+  });
+})();
+</script>
