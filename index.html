@@ -412,8 +412,11 @@ Authorization: Bearer &lt;api key&gt;
           <option>A mix, or something else</option>
         </select>
       </label>
-      <label for="req-when">Preferred date and time<input id="req-when" name="preferred_time" type="datetime-local" step="900"></label>
-      <p id="req-tz" style="margin:-6px 0 0;font-size:.84rem;color:var(--muted)">Times are in your own time zone.</p>
+      <div class="two">
+        <label for="req-date">Preferred date<input id="req-date" name="preferred_date" type="date"></label>
+        <label for="req-time">Preferred time<input id="req-time" name="preferred_clock" type="time" step="900" disabled></label>
+      </div>
+      <p id="req-tz" style="margin:-6px 0 0;font-size:.84rem;color:var(--muted)">Pick a date first, then choose a time.</p>
       <label for="req-msg">Anything I should know before the call<textarea id="req-msg" name="message" required></textarea></label>
       <button class="btn" type="submit" id="req-btn">Send request</button>
       <p id="req-status" role="status" aria-live="polite"></p>
@@ -431,19 +434,35 @@ Authorization: Bearer &lt;api key&gt;
   var form=document.getElementById('req-form'); if(!form) return;
   var btn=document.getElementById('req-btn'), st=document.getElementById('req-status');
   var tz='UTC'; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'; }catch(e){}
-  var when=document.getElementById('req-when'), tzNote=document.getElementById('req-tz');
-  if(tzNote) tzNote.textContent='Times are in your time zone ('+tz+').';
-  if(when){ var n=new Date(); n.setMinutes(Math.ceil(n.getMinutes()/15)*15,0,0); n.setMinutes(n.getMinutes()-n.getTimezoneOffset()); when.min=n.toISOString().slice(0,16); }
+  var dEl=document.getElementById('req-date'), tEl=document.getElementById('req-time'), tzNote=document.getElementById('req-tz');
+  function p2(n){return (n<10?'0':'')+n;}
+  function ymd(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+  function nextQuarter(){var n=new Date(); n.setMinutes(Math.ceil(n.getMinutes()/15)*15,0,0); return n;}
+  if(dEl){ dEl.min=ymd(nextQuarter()); }
+  function syncTime(){
+    if(!dEl.value){ tEl.disabled=true; tEl.value=''; tEl.removeAttribute('min'); tzNote.textContent='Pick a date first, then choose a time.'; return; }
+    tEl.disabled=false;
+    var q=nextQuarter();
+    if(dEl.value===ymd(q)){ tEl.min=p2(q.getHours())+':'+p2(q.getMinutes()); if(tEl.value && tEl.value<tEl.min) tEl.value=''; }
+    else { tEl.removeAttribute('min'); }
+    tzNote.textContent='Now choose a time. Times are in your time zone ('+tz+').';
+  }
+  if(dEl&&tEl){ dEl.addEventListener('input',syncTime); dEl.addEventListener('change',syncTime); }
   form.addEventListener('submit',function(e){
     e.preventDefault();
     st.className=''; st.textContent='';
     if(!form.checkValidity()){ form.reportValidity(); return; }
     btn.disabled=true; btn.textContent='Sending...';
     var data=Object.fromEntries(new FormData(form).entries());
-    if(data.preferred_time){
-      var d=new Date(data.preferred_time);
-      if(!isNaN(d)){ data.preferred_time=d.toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+' ('+tz+')'; }
-    } else { delete data.preferred_time; }
+    var when='';
+    if(data.preferred_date){
+      var fmt={weekday:'short',day:'numeric',month:'short',year:'numeric'};
+      if(data.preferred_clock){ fmt.hour='2-digit'; fmt.minute='2-digit'; }
+      var d=new Date(data.preferred_date+'T'+(data.preferred_clock||'12:00'));
+      if(!isNaN(d)) when=d.toLocaleString('en-GB',fmt)+' ('+tz+')';
+    }
+    delete data.preferred_date; delete data.preferred_clock;
+    if(when) data.preferred_time=when;
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json();})
       .then(function(j){
